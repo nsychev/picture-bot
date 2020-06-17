@@ -11,7 +11,7 @@ class User(Model):
     last_name = CharField(max_length=100)
     username = CharField(max_length=100)
 
-    rating = FloatField(default=1)
+    rating = FloatField(default=0)
     banned = BooleanField(default=False, null=True)
 
     created = DateTimeField(default=datetime.datetime.now)
