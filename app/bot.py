@@ -181,7 +181,7 @@ def vote_action(update, context):
 
     if context.user == post.user:
         update.callback_query.answer(text="ЗАПРЕЩЕНО WRONG СЕЙЧАС ЖЕ ОСТАНОВИТЕСЬ!!!!", show_alert=True)
-        logger.warn(f"{format_who(context.user, False)} selflike")
+        logger.warning(f"{format_who(context.user, False)} selflike")
         return
 
     liked = update.callback_query.data.startswith("like")
