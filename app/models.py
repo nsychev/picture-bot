@@ -21,7 +21,7 @@ class User(Model):
 
 
 class Post(Model):
-    id = IntegerField(primary_key=True)
+    id = AutoField(primary_key=True)
     user = ForeignKeyField(User, related_name='posts')
     
     likes = IntegerField(default=0)
@@ -29,6 +29,8 @@ class Post(Model):
     rating = FloatField(default=0)
 
     buttons = CharField(max_length=16)
+
+    message_id = IntegerField(unique=True, null=True)
 
     class Meta:
         database = database

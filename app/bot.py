@@ -156,20 +156,23 @@ def picture(update, context):
     else:
         emojis = ["📈", "📉"]
     
-    post = context.bot.send_photo(
+    post = Post.create(user=context.user, buttons='|'.join(emojis))
+    
+    message = context.bot.send_photo(
         config.CHANNEL_ID,
         photo=file_id,
         caption=format_who(context.user),
         parse_mode="HTML",
         reply_markup=telegram.InlineKeyboardMarkup([[
-            telegram.InlineKeyboardButton(text=emojis[0], callback_data='like'),
-            telegram.InlineKeyboardButton(text=emojis[1], callback_data='dislike')
+            telegram.InlineKeyboardButton(text=emojis[0], callback_data=f'like-{post.id}'),
+            telegram.InlineKeyboardButton(text=emojis[1], callback_data=f'hate-{post.id}')
         ]])
     )
 
-    Post.create(id=post.message_id, user=context.user, buttons='|'.join(emojis))
+    post.message_id = message.message_id
+    post.save()
 
-    update.message.reply_text('Администрация ИС Бот выражает Вам благодарность за пост!')
+    update.message.reply_text(trash.POSTED.format(post=post))
 
 
 @attach_user
@@ -209,7 +212,7 @@ def vote_action(update, context):
 
     context.bot.edit_message_caption(
         chat_id=config.CHANNEL_ID,
-        message_id=post.id,
+        message_id=post.message_id,
         caption=format_who(post.user),
         reply_markup=telegram.InlineKeyboardMarkup([[
             telegram.InlineKeyboardButton(
