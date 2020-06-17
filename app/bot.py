@@ -174,14 +174,14 @@ def picture(update, context):
 
 @attach_user
 def vote_action(update, context):
-    post = Post.get(Post.id == update.callback_query.message.message_id)
+    post = Post.get(Post.id == int(update.callback_query.data[5:]))
 
     if context.user == post.user:
         update.callback_query.answer(text="ЗАПРЕЩЕНО WRONG СЕЙЧАС ЖЕ ОСТАНОВИТЕСЬ!!!!", show_alert=True)
         logger.warn(f"{format_who(context.user, False)} selflike")
         return
 
-    liked = update.callback_query.data == "like"
+    liked = update.callback_query.data.startswith("like")
     delta = get_delta(context.user.rating)
 
     if liked:
@@ -214,11 +214,11 @@ def vote_action(update, context):
         reply_markup=telegram.InlineKeyboardMarkup([[
             telegram.InlineKeyboardButton(
                 text=f"{post.buttons.split('|')[0]} {post.likes or ''}", 
-                callback_data='like'
+                callback_data=f'like-{post.id}'
             ),
             telegram.InlineKeyboardButton(
-                text=f"{post.buttons.split('|')[0]} {post.dislikes or ''}", 
-                callback_data='dislike'
+                text=f"{post.buttons.split('|')[1]} {post.dislikes or ''}", 
+                callback_data=f'hate-{post.id}'
             )
         ]])
     )
@@ -242,7 +242,7 @@ def main():
     dp.add_handler(telegram.ext.CommandHandler('start', start))
     dp.add_handler(telegram.ext.CallbackQueryHandler(confirm_action, pattern='^confirm'))
     dp.add_handler(telegram.ext.CallbackQueryHandler(decline_action, pattern='^decline'))
-    dp.add_handler(telegram.ext.CallbackQueryHandler(vote_action, pattern='^(dis)?like$'))
+    dp.add_handler(telegram.ext.CallbackQueryHandler(vote_action, pattern='^(like|hate)'))
     dp.add_handler(telegram.ext.MessageHandler(Filters.photo, picture))
     dp.add_handler(telegram.ext.MessageHandler(Filters.all, echo))
     dp.add_error_handler(error)
