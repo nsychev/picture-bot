@@ -6,7 +6,7 @@ from models import database, User, Post, Vote
 database.connect()
 
 for user in User.select():
-    print("User", user.id, user.username)
+    print("User", user.id, user.username, user.rating, user.banned)
 
 for post in Post.select():
     print("Post", post.id, post.message_id, post.user.id, post.likes, post.dislikes, post.rating, post.buttons)
