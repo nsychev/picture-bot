@@ -176,7 +176,7 @@ def picture(update, context):
 def vote_action(update, context):
     post = Post.get(Post.id == update.callback_query.message.message_id)
 
-    if context.user == post.user and False:
+    if context.user == post.user:
         update.callback_query.answer(text="ЗАПРЕЩЕНО WRONG СЕЙЧАС ЖЕ ОСТАНОВИТЕСЬ!!!!", show_alert=True)
         logger.warn(f"{format_who(context.user, False)} selflike")
         return
