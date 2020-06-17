@@ -228,6 +228,11 @@ def vote_action(update, context):
     update.callback_query.answer(text="Голосование завершено!", show_alert=True)
 
 
+@attach_user
+def social_rating(update, context):
+    update.message.reply_text(f'Уважаемый пользователь! Ваш социальный рейтинг: **{context.user.rating}**. Постируйте хорошее и не постируйте плохое, чтобы его увеличить.', parse_mode="Markdown")
+
+
 def error(update, context):
     logger.error(msg="Exception happened", exc_info=context.error)
     if update.message:
@@ -243,6 +248,7 @@ def main():
     dp = updater.dispatcher
 
     dp.add_handler(telegram.ext.CommandHandler('start', start))
+    dp.add_handler(telegram.ext.CommandHandler('rating', social_rating))
     dp.add_handler(telegram.ext.CallbackQueryHandler(confirm_action, pattern='^confirm'))
     dp.add_handler(telegram.ext.CallbackQueryHandler(decline_action, pattern='^decline'))
     dp.add_handler(telegram.ext.CallbackQueryHandler(vote_action, pattern='^(like|hate)'))
