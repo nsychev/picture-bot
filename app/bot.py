@@ -141,7 +141,7 @@ def picture(update, context):
     best_photo = max(update.message.photo, key=lambda p: p.file_size)
     file_id = best_photo.file_id
     
-    text = update.message.text
+    text = update.message.caption
     if text is not None:
         text = text.strip()
         if len(text.split()) == 2:
