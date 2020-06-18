@@ -12,7 +12,7 @@ def create_app(bot: Bot, update_queue: Queue) -> flask.Flask:
 
     @app.route(f'/{config.PATH}', methods=['POST'])
     def webhook():
-        update = Update.de_json(flask.request.json(), bot)
+        update = Update.de_json(flask.request.json, bot)
         update_queue.put(update)
         return ""
 
