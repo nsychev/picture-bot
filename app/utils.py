@@ -10,7 +10,7 @@ def get_delta(rating: float) -> float:
 
 
 def get_ban_time(rating: float) -> float:
-    return math.exp(-rating / 5)
+    return math.floor(math.exp(-rating / 5) * 60)
 
 
 def format_who(user: User, html: bool = True) -> str:

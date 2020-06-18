@@ -1,5 +1,6 @@
 import emoji
 import logging
+from datetime import datetime, timedelta
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import CallbackContext
 
@@ -84,6 +85,19 @@ def decline_action(update: Update, context: CallbackContext):
 
 @attach_user
 def picture(update: Update, context: CallbackContext):
+    try:
+        post_time = Post.select().where(Post.user == context.user).order_by(Post.created.desc()).get().created
+        timeout = utils.get_ban_time(context.user.rating)
+
+        allow_at = post_time + timedelta(seconds=timeout)
+
+        if allow_at > datetime.now():
+            update.message.reply_text(f"Администрация ИС Бот в целях предотвращения спама в ИС Канал не даёт публиковать изображения до {allow_at}.")
+            return
+    except Post.DoesNotExist:
+        pass
+
+
     best_photo = max(update.message.photo, key=lambda p: p.file_size)
     file_id = best_photo.file_id
     
