@@ -13,7 +13,7 @@ class User(Model):
     last_name = CharField(max_length=100)
     username = CharField(max_length=100)
 
-    avatar_uid = CharField(max_length=128)
+    avatar_id = CharField(max_length=128)
 
     rating = FloatField(default=0)
     banned = BooleanField(default=False, null=True)

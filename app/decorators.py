@@ -30,13 +30,9 @@ def attach_user(func: TelegramAction) -> TelegramAction:
             force_insert = True
 
         try:
-            avatar = context.bot.get_user_profile_photos(
-                user.id,
-                offset=None,
-                limit=1
-            )[0][0]
-            if context.user.avatar_uid != avatar.file_unique_id:
-                context.user.avatar_uid = avatar.file_unique_id
+            avatar = context.bot.get_user_profile_photos(user.id, offset=None, limit=1)[0][0]
+            if context.user.avatar_id != avatar.file_unique_id:
+                context.user.avatar_id = avatar.file_unique_id
                 avatar.get_file.download(
                     os.path.join(
                         os.path.dirname(os.path.realpath(__file__)),
@@ -44,7 +40,7 @@ def attach_user(func: TelegramAction) -> TelegramAction:
                     )
                 )                
         except:
-            context.user.avatar_uid = None
+            context.user.avatar_id = None
             
         context.user.id = user.id
         context.user.first_name = user.first_name or ""
