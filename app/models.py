@@ -1,6 +1,8 @@
 import datetime
 from peewee import SqliteDatabase, IntegerField, CharField, BooleanField, AutoField, DateTimeField, ForeignKeyField, Model, FloatField
+from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 
+import utils
 
 database = SqliteDatabase("pics.db")
 
@@ -31,6 +33,20 @@ class Post(Model):
     buttons = CharField(max_length=16)
 
     message_id = IntegerField(unique=True, null=True)
+
+    def emojis(self, idx):
+        # pylint: disable=no-member
+        return self.buttons.split('|')[idx]
+
+    def get_arguments(self):
+        return {
+            "caption": utils.format_who(self.user),
+            "parse_mode": "HTML",
+            "reply_markup": InlineKeyboardMarkup([[
+                InlineKeyboardButton(text=self.emojis(0), callback_data=f'like-{self.id}'),
+                InlineKeyboardButton(text=self.emojis(1), callback_data=f'hate-{self.id}')
+            ]])
+        }
 
     class Meta:
         database = database
