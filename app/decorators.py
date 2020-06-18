@@ -40,7 +40,7 @@ def attach_user(func: TelegramAction) -> TelegramAction:
                         'static', f'{user.id}.jpg'
                     )
                 )                
-        except KeyError:
+        except IndexError:
             context.user.avatar_id = None
             
         context.user.id = user.id
