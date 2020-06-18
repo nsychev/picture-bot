@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 def initialize_webhook():
     bot = Bot(config.TOKEN)
     update_queue = Queue()
-    dp = Dispatcher(bot, update_queue)
+    dp = Dispatcher(bot, update_queue, use_context=True)
 
     threading.Thread(target=dp.start, name='dispatcher').start()
 
