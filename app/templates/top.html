@@ -47,7 +47,7 @@
           width: 48px;
           height: 48px;
           border-radius: 50%;
-          background: #00000033;
+          background: #0000001a;
           border: none;
       }
       .rank {
@@ -85,38 +85,18 @@
         <h1>Топ-100</h1>
         <h2>Активные дегроиды</h2>
       </div>
+      {% for user in users %}
       <div class="user">
-        <div class="rank">1</div>
-        <img class="avatar" src="">
+        <div class="rank">{{user['position']}}</div>
+        <img class="avatar" src="/static/{{user['id']}}.png" onerror="this.src='/static/404.png'">
         <div class="info">
-          <div class="name">@GeekIO</div>
-          <div class="details">Соцрейтинг: 1.53335, Постов: 43</div>
+          <div class="name">{{user['first']}} {{user['last']}}</div>
+          <div class="details">
+            Соц. рейтинг: ≈{{user['rating']}}, постов: {{user['posts']}}
+          </div>
         </div>
       </div>
-      <div class="user">
-        <div class="rank">1</div>
-        <img class="avatar" src="">
-        <div class="info">
-          <div class="name">@GeekIO</div>
-          <div class="details">1.53335 social points, 43 posts</div>
-        </div>
-      </div>
-      <div class="user">
-        <div class="rank">1</div>
-        <img class="avatar" src="">
-        <div class="info">
-          <div class="name">@GeekIO</div>
-          <div class="details">1.53335 social points, 43 posts</div>
-        </div>
-      </div>
-      <div class="user">
-        <div class="rank">1</div>
-        <img class="avatar" src="">
-        <div class="info">
-          <div class="name">@GeekIO</div>
-          <div class="details">1.53335 social points, 43 posts</div>
-        </div>
-      </div>
+      {% endfor %}
     </div>
   </body>
 </html>
