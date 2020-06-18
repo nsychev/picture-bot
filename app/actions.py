@@ -119,6 +119,8 @@ def picture(update: Update, context: CallbackContext):
 
 @attach_user
 def vote_action(update: Update, context: CallbackContext):
+    if not config.VOTING:
+        update.callback_query.answer(text="ИЗВИНИТЕ! система находится на реконструкции")
     post = Post.get(Post.id == int(update.callback_query.data[5:]))
 
     if context.user == post.user:
