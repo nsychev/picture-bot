@@ -43,8 +43,8 @@ class Post(Model):
             "caption": utils.format_who(self.user),
             "parse_mode": "HTML",
             "reply_markup": InlineKeyboardMarkup([[
-                InlineKeyboardButton(text=self.emojis(0), callback_data=f'like-{self.id}'),
-                InlineKeyboardButton(text=self.emojis(1), callback_data=f'hate-{self.id}')
+                InlineKeyboardButton(text=f'{self.emojis(0)} {self.likes or ""}', callback_data=f'like-{self.id}'),
+                InlineKeyboardButton(text=f'{self.emojis(1)} {self.dislikes or ""}', callback_data=f'hate-{self.id}')
             ]])
         }
 
