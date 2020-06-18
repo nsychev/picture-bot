@@ -36,6 +36,8 @@ class Post(Model):
 
     message_id = IntegerField(unique=True, null=True)
 
+    created = DateTimeField(default=datetime.datetime.now)
+
     def emojis(self, idx):
         # pylint: disable=no-member
         return self.buttons.split('|')[idx]
@@ -59,10 +61,9 @@ class Vote(Model):
 
     user = ForeignKeyField(User, related_name='reactions')
     post = ForeignKeyField(Post, related_name='reactions')
-
-    positive = BooleanField()
-
     delta = FloatField()
+
+    created = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
         database = database

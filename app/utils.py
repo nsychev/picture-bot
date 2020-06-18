@@ -9,6 +9,10 @@ def get_delta(rating: float) -> float:
         return math.log(rating + 1) / 2 + 0.5
 
 
+def get_ban_time(rating: float) -> float:
+    return math.exp(-rating / 5)
+
+
 def format_who(user: User, html: bool = True) -> str:
     if user.username:
         return f"@{user.username}"
