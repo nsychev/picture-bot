@@ -61,6 +61,7 @@ class Vote(Model):
 
     user = ForeignKeyField(User, related_name='reactions')
     post = ForeignKeyField(Post, related_name='reactions')
+    positive = BooleanField()
     delta = FloatField()
 
     created = DateTimeField(default=datetime.datetime.now)

@@ -1,5 +1,6 @@
 import flask
 from queue import Queue
+from peewee import fn, JOIN
 from telegram import Bot, Update
 
 import config
@@ -19,15 +20,19 @@ def create_app(bot: Bot, update_queue: Queue) -> flask.Flask:
 
     @app.route('/')
     def top():
-        users_query = User.select().where(User.rating > 0).order_by(User.rating.desc())
+        users_query = (User.select(User, fn.COUNT(Post.id).alias('count'))
+            .join(Post, JOIN.LEFT_OUTER)
+            .group_by(User.id)
+            .order_by(User.rating.desc()))
+        
         users = [{
             'id': user.id,
             'first': user.first_name or user.username,
             'last': user.last_name,
             'rating': round(user.rating, 5),
-            'posts': Post.select().where(Post.user == user).count(),
+            'posts': user.count,
             'position': idx + 1
-        } for idx, user in enumerate(users_query)]        
+        } for idx, user in enumerate(users_query) if user.count > 0]
         return flask.render_template('top.html', users=users)
 
     return app

@@ -144,6 +144,7 @@ def vote_action(update: Update, context: CallbackContext):
         Vote.create(
             user=context.user,
             post=post,
+            positive=liked,
             delta=delta
         )
     except:
