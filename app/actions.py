@@ -184,6 +184,13 @@ def social_rating(update: Update, context: CallbackContext):
 def error(update: Update, context: CallbackContext):
     logger.error(msg="Exception happened", exc_info=context.error)
     if update.message:
-        update.message.reply_text("faux! Interdit... administration des appels")
+        if update.message.chat.id > 0:
+            update.message.reply_text("faux! Interdit... administration des appels")
+        else:
+            context.bot.send_message(chat_id=config.ADMIN_ID, text=f"faux! faux! faux! {update.message.message_id}")
     elif update.callback_query:
-        update.callback_query.message.reply_text("faux! Interdit... administration des appels")
+        try:
+            update.callback_query.message.reply_text("faux! Interdit... administration des appels")
+        except:
+            # don't retry
+            pass
