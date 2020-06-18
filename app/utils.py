@@ -2,7 +2,6 @@ import math
 from telegram import User
 
 
-
 def get_delta(rating: float) -> float:
     if rating <= 0:
         return math.tanh(rating) / 2 + 0.5
