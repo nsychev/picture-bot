@@ -173,7 +173,7 @@ def vote_action(update: Update, context: CallbackContext):
         message_id=post.message_id,
         **post.get_arguments()
     )
-    update.callback_query.answer(text="Голосование совершено!", show_alert=True)
+    update.callback_query.answer(text="Голосование совершено!")
 
 
 @attach_user
