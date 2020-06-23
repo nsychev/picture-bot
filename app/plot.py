@@ -26,18 +26,18 @@ def ratings():
         .join(Post).join(User)
         .order_by(Vote.user))
     
-    for key, group in groupby(votes_query, lambda x: x.user.username):
+    for key, group in groupby(votes_query, lambda x: x.post.user.username):
         votes = sorted(list(group), key=lambda x: x.created)
         times = [date2num(x.created) for x in votes]        
         times[-1] = date2num(datetime.now()) # stretch/align lines
         
         # oh the ugly mess
         deltas = [x.delta for x in votes][::-1]
-        rating = votes[0].user.rating
+        rating = votes[0].post.user.rating
         ratings = []
         for delta in deltas:
             rating -= delta
-            ratings.insert(0, rating)
+        ratings = ratings[::-1]
             
         ax.plot_date(times, ratings, fmt="-", label=key)
 
