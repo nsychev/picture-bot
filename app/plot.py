@@ -37,6 +37,7 @@ def ratings():
         ratings = []
         for delta in deltas:
             rating -= delta
+            ratings.append(rating)
         ratings = ratings[::-1]
             
         ax.plot_date(times, ratings, fmt="-", label=key)
