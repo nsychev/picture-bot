@@ -1,15 +1,19 @@
-from peewee import fn, JOIN
-from models import database, User, Post, Vote
-
+import time
+from datetime import datetime
 from io import BytesIO
-
+from itertools import groupby
+from functools import reduce
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from matplotlib.figure import Figure
 from matplotlib.dates import date2num, DateFormatter, DayLocator
+from peewee import fn, JOIN
 
-from itertools import groupby
-from functools import reduce
-from datetime import datetime
+from models import database, User, Post, Vote
+
+
+class CacheObject:
+    picture = None
+    expires = 0
 
 
 def ratings():
@@ -61,3 +65,11 @@ def to_bytes(plot):
     out = BytesIO()
     FigureCanvasAgg(plot).print_png(out)
     return out
+
+
+def deputat_mondat():
+    if time.time() > CacheObject.expires:
+        CacheObject.expires = time.time() + 60
+        CacheObject.picture = to_bytes(ratings()).getvalue()
+    
+    return CacheObject.picture

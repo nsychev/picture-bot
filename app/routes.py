@@ -39,7 +39,7 @@ def create_app(bot: Bot, update_queue: Queue) -> flask.Flask:
     @app.route('/grafik')
     def grafik():
         response = flask.make_response(
-            plot.to_bytes(plot.ratings()).getvalue()
+            plot.deputat_mondat()
         )
         response.mimetype = 'image/png'
         return response
