@@ -24,7 +24,7 @@ def ratings():
     
     votes_query = (Vote.select()
         .join(Post).join(User)
-        .order_by(Vote.user))
+        .order_by(Vote.post.user))
     
     for key, group in groupby(votes_query, lambda x: x.post.user.username):
         votes = sorted(list(group), key=lambda x: x.created)
