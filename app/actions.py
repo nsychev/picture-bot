@@ -97,6 +97,9 @@ def picture(update: Update, context: CallbackContext):
     except Post.DoesNotExist:
         pass
 
+    if context.user.banned:
+        update.message.reply_text(trash.BANNED)
+        return
 
     best_photo = max(update.message.photo, key=lambda p: p.file_size)
     file_id = best_photo.file_id
@@ -136,6 +139,10 @@ def vote_action(update: Update, context: CallbackContext):
     if not config.VOTING:
         update.callback_query.answer(text="ИЗВИНИТЕ! система находится на реконструкции")
     post = Post.get(Post.id == int(update.callback_query.data[5:]))
+
+    if context.user.banned:
+        update.callback_query.answer(text="ваш аватар в сети интернет был остановлен.", show_alert=True)
+        return
 
     if context.user == post.user:
         update.callback_query.answer(text="ЗАПРЕЩЕНО WRONG СЕЙЧАС ЖЕ ОСТАНОВИТЕСЬ!!!!", show_alert=True)
