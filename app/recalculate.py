@@ -6,6 +6,17 @@ from models import database, User, Post, Vote
 
 database.connect()
 
+old_v = User.get(User.id == 1001112599)
+new_v = User.get(User.id == 1164432500)
+
+for post in Post.select().where(Post.user == old_v):
+    post.user = new_v
+    post.save()
+
+for vote in Vote.select().where(Vote.user == old_v):
+    vote.user = new_v
+    vote.save()
+
 User.update({User.rating: 0}).execute()
 Post.update({Post.rating: 0}).execute()
 

@@ -17,7 +17,7 @@ class CacheObject:
 
 
 def ratings():
-    fig = Figure(figsize=(8,6))
+    fig = Figure(figsize=(12,6))
     ax = fig.add_subplot(1, 1, 1)
     
     ax.set_prop_cycle(color=[
@@ -49,7 +49,7 @@ def ratings():
     # sane dates
     ax.xaxis.set_major_formatter(DateFormatter("%F"))
     ax.xaxis.set_major_locator(DayLocator())
-    ax.xaxis.set_tick_params(rotation=32)
+    ax.xaxis.set_tick_params(rotation=270)
 
     # styling
     ax.legend(loc='lower left', bbox_to_anchor= (0.0, 1.01),
